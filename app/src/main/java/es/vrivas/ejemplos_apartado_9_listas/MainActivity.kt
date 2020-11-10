@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -110,14 +111,18 @@ class MainActivity : AppCompatActivity() {
         RecyclerView.Adapter<AdaptadorPersonalizado.ContenedorVistaItem>() {
 
             private val onClickListener: View.OnClickListener
-
+            private var posicionSeleccionada: Int = -1
             init {
                 onClickListener = View.OnClickListener { v ->
                     // POnemos nuevamente de color blanco el fondo de TODAS las celdas.
-                    for( l in lista ) {
+                    /*for( l in lista ) {
                         l.setBackgroundColor(Color.argb(0,0,0,0))
+                    }*/
+                    if ( posicionSeleccionada>=0 ) {
+                        lista[posicionSeleccionada].setBackgroundColor(Color.argb(0,0,0,0))
                     }
-                    val item = v.tag as VehiculoContent.VehiculoItem
+                    posicionSeleccionada=v.tag as Int
+                    val item = conjuntoDatos[posicionSeleccionada]
                     v.setBackgroundColor(Color.argb(70,100,100,255))
                     Snackbar.make( v, item.matricula, Snackbar.LENGTH_LONG).show()
                 }
@@ -136,8 +141,7 @@ class MainActivity : AppCompatActivity() {
                 .inflate(R.layout.celda_icono_marca_martricula, parent, false) as View
             // En este momento podemos cambiar las propiedades de los elementos del layout de la celda
 
-            // Asociamos eventos a cada elemento de la lsita
-            layout.setOnClickListener(onClickListener)
+
             return ContenedorVistaItem(layout)
         }
 
@@ -152,9 +156,12 @@ class MainActivity : AppCompatActivity() {
                 im_icono.setImageResource(conjuntoDatos[position].icono)
 
                 // tag Almacena el objeto que está representado en cada posición de la lista
-                tag=conjuntoDatos[position]
+                // Para mejorar la forma en que quitamos el color de fondo a los elementos seleccioandos
+                // guardamos en tag la posición del elemento
+                tag=position
 
-
+                // Asociamos eventos a cada elemento de la lsita
+                setOnClickListener(onClickListener)
             }
         }
 
