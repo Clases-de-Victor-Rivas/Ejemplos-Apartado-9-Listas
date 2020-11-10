@@ -3,7 +3,9 @@ package es.vrivas.ejemplos_apartado_9_listas
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import es.vrivas.ejemplos_apartado_9_listas.data.VehiculoContent
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.celda_icono_marca_martricula.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+        /*
     // Clase que permite gestionar cómo se verá cada elemento de la lista
     class AdaptadorPersonalizado(private val conjuntoDatos: MutableList<VehiculoContent.VehiculoItem>) :
             RecyclerView.Adapter<AdaptadorPersonalizado.ContenedorVistaItem>() {
@@ -80,5 +84,36 @@ class MainActivity : AppCompatActivity() {
         // Return the size of your dataset (invoked by the layout manager)
         override fun getItemCount() = conjuntoDatos.size
     }
+    */
+    class AdaptadorPersonalizado(private val conjuntoDatos: MutableList<VehiculoContent.VehiculoItem>) :
+        RecyclerView.Adapter<AdaptadorPersonalizado.ContenedorVistaItem>() {
 
+        // Provide a reference to the views for each data item
+        // Complex data items may need more than one view per item, and
+        // you provide access to all the views for a data item in a view holder.
+        // Each data item is just a string in this case that is shown in a TextView.
+        class ContenedorVistaItem(val layout: View) : RecyclerView.ViewHolder(layout)
+
+        // Create new views (invoked by the layout manager)
+        override fun onCreateViewHolder(parent: ViewGroup,
+                                        viewType: Int): AdaptadorPersonalizado.ContenedorVistaItem {
+            // create a new view
+            val layout = LayoutInflater.from(parent.context)
+                .inflate(R.layout.celda_icono_marca_martricula, parent, false) as View
+            // set the view's size, margins, paddings and layout parameters
+            return ContenedorVistaItem(layout)
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        override fun onBindViewHolder(contenedor: ContenedorVistaItem, position: Int) {
+            // - get element from your dataset at this position
+            // - replace the contents of the view with that element
+            contenedor.layout.tv_matricula.text= conjuntoDatos[position].matricula
+            contenedor.layout.tv_marca.text= conjuntoDatos[position].marca
+            contenedor.layout.im_icono.setImageResource(conjuntoDatos[position].icono)
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        override fun getItemCount() = conjuntoDatos.size
+    }
 }
