@@ -3,7 +3,6 @@ package es.vrivas.ejemplos_apartado_9_listas
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Color.rgb
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Layout
@@ -114,8 +113,9 @@ class MainActivity : AppCompatActivity() {
 
             init {
                 onClickListener = View.OnClickListener { v ->
-                    for( v in lista ) {
-                        v.setBackgroundColor(rgb(1F, 1F, 1F))
+                    // POnemos nuevamente de color blanco el fondo de TODAS las celdas.
+                    for( l in lista ) {
+                        l.setBackgroundColor(Color.argb(0,0,0,0))
                     }
                     val item = v.tag as VehiculoContent.VehiculoItem
                     v.setBackgroundColor(Color.argb(70,100,100,255))
